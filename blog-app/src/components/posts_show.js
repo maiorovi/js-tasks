@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchPost} from '../actions/index.js';
+import {fetchPost, deletePost} from '../actions/index.js';
 import {Link} from 'react-router-dom';
 
 class PostShow extends Component {
@@ -27,9 +27,21 @@ class PostShow extends Component {
                 <div>
                     <Link className="btn btn-danger" to="/">Cancel</Link>
                 </div>
+                <button className="btn btn-danger pull-xs-right"
+                onClick={this.onDeleteClick.bind(this)}>
+                    Delete post
+                </button>
             </div>
-
         );
+
+    }
+
+    onDeleteClick() {
+        const {id} = this.props.match.params;
+
+        this.props.deletePost(id, () => {
+            this.props.history.push('/')
+        })
     }
 }
 
@@ -40,4 +52,4 @@ function mapStateToProps({posts}, ownProps) {
 }
 
 
-export default connect(mapStateToProps, {fetchPost})(PostShow);
+export default connect(mapStateToProps, {fetchPost, deletePost})(PostShow);
